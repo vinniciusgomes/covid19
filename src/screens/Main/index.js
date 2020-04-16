@@ -93,6 +93,9 @@ export default class Main extends Component {
   };
 
   render() {
+    setTimeout(() => {
+      this.requestApiData();
+    }, 180000);
     const { cases, data, loading, refreshing, lastUpdate } = this.state;
     return (
       <Container>
