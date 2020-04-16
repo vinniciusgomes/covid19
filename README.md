@@ -43,10 +43,7 @@ This project was developed with the following technologies:
 
 Covid 19 is a simple app for tracking data on the pandemic in Brazil.
 
-<div>
-  <img alt="ios" src=".github/app-ios.png" width="40%">
-  <img alt="android" src=".github/app-android.png" width="40%">
-<div>
+<img alt="ios" src=".github/app-ios-android.png" width="100%">
 
 ## 🤔 How to contribute
 
