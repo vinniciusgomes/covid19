@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ScrollView } from "react-native";
+import { ScrollView, RefreshControl, Text } from "react-native";
 import { PieChart } from "react-native-svg-charts";
 import moment from "moment";
 
@@ -26,6 +26,8 @@ import {
   ChartsInformationItemIcon,
   ChartsInformationItem,
   ChartsInformationNumber,
+  FooterInformation,
+  LastUpdate,
 } from "./styles";
 import api from "../../services/api";
 
@@ -35,10 +37,9 @@ export default class Main extends Component {
     this.state = {
       cases: [],
       data: [],
-      confirmed: null,
-      recovered: null,
-      deaths: null,
       loading: true,
+      refreshing: false,
+      lastUpdate: null,
     };
   }
 
@@ -48,16 +49,16 @@ export default class Main extends Component {
 
   requestApiData = async () => {
     await api.get("confirmed").then((response) => {
-      this.setState({ cases: response.data });
+      this.setState({
+        cases: response.data,
+        lastUpdate: moment(new Date()).utcOffset(-3).format("HH:mm"),
+      });
       this.organizationData();
     });
   };
 
   organizationData = () => {
     let { cases } = this.state;
-    let confirmed = cases[2].Confirmed;
-    let recovered = cases[2].Recovered;
-    let deaths = cases[2].Deaths;
     let data = [
       {
         key: 1,
@@ -75,19 +76,37 @@ export default class Main extends Component {
         svg: { fill: colors.red },
       },
     ];
-    this.setState({ data, confirmed, recovered, deaths, loading: false });
+    this.setState({
+      data,
+      loading: false,
+      refreshing: false,
+    });
   };
 
   formatNumber(num) {
     return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
   }
 
+  onRefresh = () => {
+    this.setState({ refreshing: true });
+    this.requestApiData();
+  };
+
   render() {
-    const { data, confirmed, recovered, deaths, loading } = this.state;
+    const { cases, data, loading, refreshing, lastUpdate } = this.state;
     return (
       <Container>
         {loading ? null : (
-          <ScrollView>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            refreshControl={
+              <RefreshControl
+                tintColor={colors.darkBlue}
+                refreshing={refreshing}
+                onRefresh={this.onRefresh}
+              />
+            }
+          >
             <Header>
               <TodayText>Today's Report</TodayText>
               <DateText>{moment(new Date()).format("DD, MMM YYYY")}</DateText>
@@ -96,16 +115,14 @@ export default class Main extends Component {
               <CovidTextContainer>
                 <CovidText>COVID - 19 Brazil Cases</CovidText>
               </CovidTextContainer>
-
               <ChartsContainer>
                 <PieChart
                   style={{ height: 200, width: 200 }}
                   valueAccessor={({ item }) => item.amount}
                   data={data}
                   spacing={0}
-                  outerRadius={"95%"}
+                  outerRadius={"100%"}
                 />
-
                 <ChartsInformationContainer>
                   <ChartsInformationItem>
                     <ChartsInformationHeader>
@@ -114,7 +131,6 @@ export default class Main extends Component {
                     </ChartsInformationHeader>
                     {/* <ChartsInformationNumber>50%</ChartsInformationNumber> */}
                   </ChartsInformationItem>
-
                   <ChartsInformationItem>
                     <ChartsInformationHeader>
                       <ChartsInformationItemIcon color={colors.lightBlue} />
@@ -122,7 +138,6 @@ export default class Main extends Component {
                     </ChartsInformationHeader>
                     {/* <ChartsInformationNumber>50%</ChartsInformationNumber> */}
                   </ChartsInformationItem>
-
                   <ChartsInformationItem>
                     <ChartsInformationHeader>
                       <ChartsInformationItemIcon color={colors.red} />
@@ -132,7 +147,6 @@ export default class Main extends Component {
                   </ChartsInformationItem>
                 </ChartsInformationContainer>
               </ChartsContainer>
-
               <InformationContainer>
                 <InformationCard>
                   <InformationHeader>
@@ -140,7 +154,7 @@ export default class Main extends Component {
                     <InformationTitle>Recovered</InformationTitle>
                   </InformationHeader>
                   <InformationNumber>
-                    {this.formatNumber(recovered)}
+                    {this.formatNumber(cases[2].Recovered)}
                   </InformationNumber>
                 </InformationCard>
                 <InformationCard>
@@ -149,7 +163,7 @@ export default class Main extends Component {
                     <InformationTitle>Death</InformationTitle>
                   </InformationHeader>
                   <InformationNumber>
-                    {this.formatNumber(deaths)}
+                    {this.formatNumber(cases[2].Deaths)}
                   </InformationNumber>
                 </InformationCard>
                 <InformationCard>
@@ -158,7 +172,7 @@ export default class Main extends Component {
                     <InformationTitle>Confirmed</InformationTitle>
                   </InformationHeader>
                   <InformationNumber>
-                    {this.formatNumber(confirmed)}
+                    {this.formatNumber(cases[2].Confirmed)}
                   </InformationNumber>
                 </InformationCard>
                 <InformationCard>
@@ -167,11 +181,12 @@ export default class Main extends Component {
                     <InformationTitle>Total</InformationTitle>
                   </InformationHeader>
                   <InformationNumber>
-                    {this.formatNumber(recovered + confirmed + deaths)}
+                    {this.formatNumber(
+                      cases[2].Recovered + cases[2].Confirmed + cases[2].Deaths
+                    )}
                   </InformationNumber>
                 </InformationCard>
               </InformationContainer>
-
               <WorldMapContainer>
                 <WorldMap
                   source={require("../../static/worldmap.png")}
@@ -179,6 +194,11 @@ export default class Main extends Component {
                 />
               </WorldMapContainer>
             </Content>
+            <FooterInformation>
+              <LastUpdate>
+                Last update: {lastUpdate.replace(":", "h")}
+              </LastUpdate>
+            </FooterInformation>
           </ScrollView>
         )}
       </Container>

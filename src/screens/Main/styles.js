@@ -145,5 +145,17 @@ export const ChartsInformationNumber = styled.Text`
   color: ${colors.darkBlue};
   font-weight: 600;
   margin-left: 25px;
+`;
 
+export const FooterInformation = styled.View`
+  width: 100%;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const LastUpdate = styled.Text`
+  font-size: 10px;
+  color: ${colors.gray};
 `;

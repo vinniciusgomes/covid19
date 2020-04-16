@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "covid19",
-    "slug": "covid19",
+    "name": "COVID-19 Tracker",
+    "slug": "covid-19",
     "platforms": [
       "ios",
       "android",
@@ -23,6 +23,8 @@
     ],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "description": "\nApp to monitor the progress of covid19 in Brazil",
+    "githubUrl": "https://github.com/vinniciusgomes/covid19-app"
   }
 }

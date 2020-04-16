@@ -1,0 +1,58 @@
+[
+  {
+    "Country": "Brazil",
+    "CountryCode": "BR",
+    "Province": "",
+    "City": "",
+    "CityCode": "",
+    "Lat": "-14.24",
+    "Lon": "-51.93",
+    "Confirmed": 22318,
+    "Deaths": 1230,
+    "Recovered": 173,
+    "Active": 20915,
+    "Date": "2020-04-13T00:00:00Z"
+  },
+  {
+    "Country": "Brazil",
+    "CountryCode": "BR",
+    "Province": "",
+    "City": "",
+    "CityCode": "",
+    "Lat": "-14.24",
+    "Lon": "-51.93",
+    "Confirmed": 23430,
+    "Deaths": 1328,
+    "Recovered": 173,
+    "Active": 21929,
+    "Date": "2020-04-14T00:00:00Z"
+  },
+  {
+    "Country": "Brazil",
+    "CountryCode": "BR",
+    "Province": "",
+    "City": "",
+    "CityCode": "",
+    "Lat": "-14.24",
+    "Lon": "-51.93",
+    "Confirmed": 25262,
+    "Deaths": 1532,
+    "Recovered": 14026,
+    "Active": 9704,
+    "Date": "2020-04-15T00:00:00Z"
+  },
+  {
+    "Country": "Brazil",
+    "CountryCode": "BR",
+    "Province": "",
+    "City": "",
+    "CityCode": "",
+    "Lat": "-14.24",
+    "Lon": "-51.93",
+    "Confirmed": 28912,
+    "Deaths": 1760,
+    "Recovered": 14026,
+    "Active": 13126,
+    "Date": "2020-04-16T00:00:00Z"
+  }
+]
